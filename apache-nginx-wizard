@@ -3,17 +3,18 @@
 # Name:        apache-nginx-wizard
 # By:          Julian Orchard <hello@julianorchard.co.uk>
 # Tag Added:   10/03/2022
-# Desciption:  Configuration Wizard for Apache and Nginx URL's.
+# Description: Configuration Wizard for Apache and Nginx URL's.
 
 import getpass
 import os
 import pwd
 import sys
 
+HOME_BASE_DIR = "/home"
 NGINX_PATH = "/etc/nginx"
 SITES_AVAILABLE_PATH = "/sites-available"
 SITE_BASE_DIR = "/var/www"
-HOME_BASE_DIR = "/home"
+WIZARD_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def make_sym_link(site_dir,uid,home_dir,site_url):
@@ -22,13 +23,13 @@ def make_sym_link(site_dir,uid,home_dir,site_url):
     os.chown(home_dir + site_url,uid,uid)
 
 def create_var_dir(site_dir,uid):
-    if not os.path.exists(site_dir): 
+    if not os.path.exists(site_dir):
         print(f"Creating directory at {site_dir}...")
         os.mkdir(site_dir)
         os.chown(site_dir,uid,uid)
         os.chmod(site_dir,755)
         return True
-    else: 
+    else:
         print(f"A directory of this name ({site_dir}) already exists. Please try again, or edit the current configuration.")
         return False
 
@@ -71,7 +72,7 @@ def main():
     nginx_file = f"{NGINX_PATH}{SITES_AVAILABLE_PATH}/{site_url}"
 
 # Creating SITE_BASE_DIR directories
-    if not create_var_dir(site_dir,uid): 
+    if not create_var_dir(site_dir,uid):
        sys.exit()
 
 # Make SymLink in Home Directory
@@ -79,13 +80,13 @@ def main():
 
 # Copy and configure Nginx files in /etc/nginx/sites-available, etc.
     if is_ssl():
-        nginx_template_file = f"{home_dir}.local/bin/nginx/template-ssl.nginx"
-    else: 
-        nginx_template_file = f"{home_dir}.local/bin/nginx/template.nginx"
+        nginx_template_file = f"{WIZARD_PATH}/nginx/template-ssl.nginx"
+    else:
+        nginx_template_file = f"{WIZARD_PATH}/nginx/template.nginx"
 
     create_config(nginx_template_file,site_url,nginx_file)
 
     print("Don't forget to refresh nginx, with 'service nginx reload'!")
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     main()
