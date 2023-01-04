@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 
-# Name:        apache-nginx-wizard
-# By:          Julian Orchard <hello@julianorchard.co.uk>
-# Tag Added:   10/03/2022
-# Description: Configuration Wizard for Apache and Nginx URL's.
+##   nginx-wizard  ---  Wizard to configure new URL's on Nginx. 
+
+# Copyright (c) 2023   Julian Orchard <jorchard@pm.me>
+
+## Description:
+
+# This is a small script which I use to set up new instances of 
+# Nginx hosted URL's, mainly on Ubuntu servers. 
+
+## License:
+
+# See /LICENSE file in the root of this repository.
+
+## Code:
 
 import getpass
 import os
@@ -11,11 +21,11 @@ import pwd
 import signal
 import sys
 
-HOME_BASE_DIR = "/home"
-NGINX_PATH = "/etc/nginx"
+HOME_BASE_DIR        = "/home"
+NGINX_PATH           = "/etc/nginx"
 SITES_AVAILABLE_PATH = "/sites-available"
-SITE_BASE_DIR = "/var/www"
-WIZARD_PATH = os.path.dirname(os.path.abspath(__file__))
+SITE_BASE_DIR        = "/var/www"
+WIZARD_PATH          = os.path.dirname(os.path.abspath(__file__))
 
 def make_sym_link(site_dir,uid,home_dir,site_url):
     print(f"Creating a shortcut to directory in {home_dir}...")
