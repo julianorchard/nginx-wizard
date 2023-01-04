@@ -1,2 +1,1 @@
-*.apacheconf linguist-detectable=true
 *.nginx linguist-detectable=true
